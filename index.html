@@ -9,7 +9,7 @@ Outdoor Advertising
 <link rel="stylesheet" href="map.css" type="text/css" />
 <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/themes/smoothness/jquery-ui.css" type="text/css" />
 <script type="text/javascript"
-      src="http://maps.googleapis.com/maps/api/js?key=AIzaSyBvl2Lx_Tj-9N_fT9arfnl8utRkVPe50uA&sensor=true">
+      src="http://maps.googleapis.com/maps/api/js?key=AIzaSyBvl2Lx_Tj-9N_fT9arfnl8utRkVPe50uA&sensor=false">
     </script>
     
    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
@@ -34,8 +34,8 @@ Outdoor Advertising
 	</ul>
 	<div id="tabs-1">
 		 <input type="text" id="address" style="width:16em;" value="Enter an Address or LatLong" onClick="SelectAll('address');" />
-  <input type="submit" value="Search" />
-  <input type="reset" value="Reset"/>
+  <input type="submit" value="Search" onClick="geocode();"/>
+  <input type="reset" value="Reset" onClick="resetgeo()"/>
 
         
         </div>
