@@ -29,11 +29,7 @@ var mainLayer = new google.maps.FusionTablesLayer(oaid);
   
   }
   
-  function SelectAll(id)
-{
-    document.getElementById(id).focus();
-    document.getElementById(id).select();
-}
+
 
 function geocode() {
      var address = document.getElementById("address").value;
