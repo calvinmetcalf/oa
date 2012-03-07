@@ -8,6 +8,7 @@ Outdoor Advertising
 </title>
 <link rel="stylesheet" href="map.css" type="text/css" />
 <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/themes/smoothness/jquery-ui.css" type="text/css" />
+<script type="text/javascript" src="http://www.google.com/jsapi"></script>
 <script type="text/javascript"
       src="http://maps.googleapis.com/maps/api/js?key=AIzaSyBvl2Lx_Tj-9N_fT9arfnl8utRkVPe50uA&sensor=false">
     </script>
@@ -15,17 +16,9 @@ Outdoor Advertising
    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
   <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js"></script>
 <script type="text/javascript" src="map.js"></script>
-<script>
-    $(function() {
-		$( "#tabs" ).tabs({
-			collapsible: true,
-            selected: -1
-		});
-        $( "input:submit,input:reset" ).button();
-	});
-	</script>
+
 </head>
-<body onload="initialize();">
+<body onload="initialize();popLists();">
 <div id="tabs">
     <ul>
 		<li><a href="#tabs-1">Search</a></li>
@@ -40,9 +33,9 @@ Outdoor Advertising
         
         </div>
 	<div id="tabs-2">
-		<select><option>All Types</option></select>
-        <select><option>All Permit Holders</option></select>
-         <select><option>All Municipalities</option></select>
+		<select id="signType" onchange="changeMap();"><option value="">All Types</option></select>
+        <select id="holderName" onchange="changeMap();"><option value="">All Permit Holders</option></select>
+         <select id="cityTown" onchange="changeMap();"><option value="">All Municipalities</option></select>
         </div>
 	<div id="tabs-3">
 	 <input type="text" id="lookup" placeholder="Permit Number"  />
