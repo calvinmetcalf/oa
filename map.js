@@ -54,6 +54,7 @@ marker.setMap(null);
             selected: -1
 		});
         $( "input:submit,input:reset" ).button();
+        $('input, textarea').placeholder();
 	});
     
     google.load('visualization', '1', {});
