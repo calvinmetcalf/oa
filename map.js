@@ -128,5 +128,43 @@ function changeMap() {
 function lookupPermit() {
   var permitNum = document.getElementById('permitNumber').value.replace("'", "\\'");
   mainLayer.setQuery("SELECT 'point' FROM " + oaid + " WHERE 'PermitNumber' = '" + permitNum + "'");
+  var centerQueryText = encodeURIComponent("SELECT 'Latitude', 'Longitude' FROM " + oaid + " WHERE 'PermitNumber' = '" + permitNum + "'");
+  var centerQuery = new google.visualization.Query('http://www.google.com/fusiontables/gvizdata?tq='  + centerQueryText);
+  centerQuery.send(zoomTo);
 }
 
+function zoomTo(response) {
+
+if (!response) {
+  alert('no response');
+  return;
+}
+
+if (response.isError()) {
+  alert('Error in query: ' + response.getMessage() + ' ' + response.getDetailedMessage());
+  return;
+} 
+
+  FTresponse = response;
+  //for more information on the response object, see the documentation
+  //http://code.google.com/apis/visualization/documentation/reference.html#QueryResponse
+
+
+m.setCenter(new google.maps.LatLng(
+
+          parseFloat(response.getDataTable().getValue(0, 0)),
+
+          parseFloat(response.getDataTable().getValue(0, 1))
+
+));
+
+m.setZoom(14);
+
+}
+
+function resetPermit(){
+      m.setCenter(center);
+    m.setZoom(zoom);
+    changeMap();
+    
+}
