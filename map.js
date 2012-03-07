@@ -18,6 +18,7 @@ function initialize() {
 var baseLayer = new google.maps.FusionTablesLayer(baseid);
   baseLayer.setQuery("SELECT 'geometry' FROM " + baseid);
   baseLayer.setMap(m);
+  baseLayer.setOptions({suppressInfoWindows:true});
   
  mainLayer = new google.maps.FusionTablesLayer(oaid);
   mainLayer.setQuery("SELECT 'point' FROM " + oaid + " WHERE 'Status' = 'Active'");
@@ -122,3 +123,10 @@ function changeMap() {
   mainLayer.setQuery("SELECT 'point' FROM " + oaid + " WHERE 'Status' = 'Active' " + signType + holderName + cityTown);
  
 }
+
+
+function lookupPermit() {
+  var permitNum = document.getElementById('permitNumber').value.replace("'", "\\'");
+  mainLayer.setQuery("SELECT 'point' FROM " + oaid + " WHERE 'PermitNumber' = '" + permitNum + "'");
+}
+
