@@ -5,7 +5,7 @@ var geocoder = new google.maps.Geocoder();
 var zoom = 8;
 var center = new google.maps.LatLng(42.04113400940814,-71.795654296875);
 var marker;
-var mainLayer
+var mainLayer;
 
 function initialize() {
     
