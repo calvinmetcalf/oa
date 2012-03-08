@@ -130,7 +130,8 @@ function lookupPermit() {
   var permitNum = document.getElementById('permitNumber').value.replace("'", "\\'");
   mainLayer.setQuery("SELECT 'point' FROM " + oaid + " WHERE 'PermitNumber' = '" + permitNum + "'");
   var centerQueryText = encodeURIComponent("SELECT 'Latitude', 'Longitude' FROM " + oaid + " WHERE 'PermitNumber' = '" + permitNum + "'");
-  var centerQuery = new google.visualization.Query('http://www.google.com/fusiontables/gvizdata?tq='  + centerQueryText);
+ /*I have no idea why "'PermitNumber' = " works here but "'PermitNumber' CONTAINS" does not*/
+ var centerQuery = new google.visualization.Query('http://www.google.com/fusiontables/gvizdata?tq='  + centerQueryText);
   centerQuery.send(zoomTo);
 }
 
@@ -146,9 +147,6 @@ if (response.isError()) {
   return;
 } 
 
-  FTresponse = response;
-  //for more information on the response object, see the documentation
-  //http://code.google.com/apis/visualization/documentation/reference.html#QueryResponse
 
 
 m.setCenter(new google.maps.LatLng(
