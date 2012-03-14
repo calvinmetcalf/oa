@@ -64,18 +64,16 @@ marker.setMap(null);
     google.load('visualization', '1', {});
     
 function popLists(){    
-    var querySignText = encodeURIComponent("SELECT 'SignType', COUNT() FROM " + oaid + " GROUP BY 'SignType'");
-    var querySign = new google.visualization.Query('http://www.google.com/fusiontables/gvizdata?tq='  + querySignText);
-	querySign.send(getSignData);
-    
-    var queryHolderText = encodeURIComponent("SELECT 'PermitHoldersName', COUNT() FROM " + oaid + " GROUP BY 'PermitHoldersName'");
-    var queryHolder = new google.visualization.Query('http://www.google.com/fusiontables/gvizdata?tq='  + queryHolderText);
-	queryHolder.send(getHolderData);
-            
-    var queryMuniText = encodeURIComponent("SELECT 'SignCity', COUNT() FROM " + oaid + " GROUP BY 'SignCity'");
-	var queryMuni = new google.visualization.Query('http://www.google.com/fusiontables/gvizdata?tq='  + queryMuniText);
-	queryMuni.send(getMuniData);
+    MakePopList('SignType',getSignData);
+    MakePopList('PermitHoldersName',getHolderData);
+    MakePopList('SignCity',getMuniData);
 }
+
+function MakePopList(columnName,callfunc){
+ var queryText = encodeURIComponent("SELECT " +columnName + ", COUNT() FROM " + oaid + " GROUP BY " +columnName);
+    var query = new google.visualization.Query('http://www.google.com/fusiontables/gvizdata?tq='  + queryText);
+	query.send(callfunc);
+	}
 
 var getSignData = MakeData("signType"," AND 'SignType' like '")
 var getHolderData = MakeData("holderName"," AND 'PermitHoldersName' like '")
