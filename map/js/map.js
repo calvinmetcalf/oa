@@ -7,7 +7,18 @@ var center = new google.maps.LatLng(42.04113400940814,-71.795654296875);
 var marker;
 var mainLayer;
 
-function initialize() {
+$(function() {
+        $( "#tabs" ).tabs({
+    		collapsible: true,
+            selected: -1
+		});
+        $( "input:submit,input:reset" ).button();
+        $('input, textarea').placeholder();
+        fusion();
+        popLists();
+	});
+
+function fusion() {
     
   m = new google.maps.Map(document.getElementById('map'), {
       center: center,
@@ -48,14 +59,7 @@ function resetgeo() {
 marker.setMap(null);
 }
 
- $(function() {
-    	$( "#tabs" ).tabs({
-			collapsible: true,
-            selected: -1
-		});
-        $( "input:submit,input:reset" ).button();
-        $('input, textarea').placeholder();
-	});
+ 
     
     google.load('visualization', '1', {});
     
@@ -73,49 +77,36 @@ function popLists(){
 	queryMuni.send(getMuniData);
 }
 
-function getSignData(response) {
-  
+var getSignData = MakeData("signType"," AND 'SignType' like '")
+var getHolderData = MakeData("holderName"," AND 'PermitHoldersName' like '")
+var getMuniData = MakeData("cityTown"," AND 'SignCity' like '")
+
+function MakeData(selectID,querryText){
+
+function getData(response) {
   // Get the number of rows
-  numRows = response.getDataTable().getNumberOfRows();
+var numRows = response.getDataTable().getNumberOfRows();
   
   // Add options to the select menu based on the results
-  typeSelect = document.getElementById("signType");  
+ var typeSelect = document.getElementById(selectID);  
   for(i = 0; i < numRows; i++) {
-      newoption = document.createElement('option');
-  	newoption.setAttribute('value'," AND 'SignType' like '" + response.getDataTable().getValue(i, 0) + "'");
-  	newoption.innerHTML = response.getDataTable().getValue(i, 0);
-  	typeSelect.appendChild(newoption);
+      var ftData = response.getDataTable().getValue(i, 0);
+      if (!ftData)
+     { continue;}
+     else if
+     (String(ftData).indexOf(",")>-1)
+     {continue;}
+     else
+     { var newoption = document.createElement('option');
+      newoption.setAttribute('value',querryText + ftData + "'");
+    newoption.innerHTML = ftData;
+    typeSelect.appendChild(newoption);}
   }  
+}
+return getData;
 }
 
-function getHolderData(response) {
-  
-  // Get the number of rows
-  numRows = response.getDataTable().getNumberOfRows();
-  
-  // Add options to the select menu based on the results
-  holderSelect = document.getElementById("holderName");  
-  for(i = 0; i < numRows; i++) {
-      newoption = document.createElement('option');
- 	newoption.setAttribute('value'," AND 'PermitHoldersName' like '" + response.getDataTable().getValue(i, 0) + "'");
-  	newoption.innerHTML = response.getDataTable().getValue(i, 0);
-  	holderSelect.appendChild(newoption);
-  }  
-}
-function getMuniData(response) {
-  
-  // Get the number of rows
-  numRows = response.getDataTable().getNumberOfRows();
-  
-  // Add options to the select menu based on the results
-  muniSelect = document.getElementById("cityTown");  
-  for(i = 0; i < numRows; i++) {
-  	newoption = document.createElement('option');
-  	newoption.setAttribute('value'," AND 'SignCity' like '" + response.getDataTable().getValue(i, 0) + "'");
-  	newoption.innerHTML = response.getDataTable().getValue(i, 0);
-  	muniSelect.appendChild(newoption);
-  }  
-}
+
 
 function changeMap() {
   var signType = document.getElementById('signType').value.replace("'", "\\'");
