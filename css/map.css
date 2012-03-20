@@ -18,6 +18,27 @@
   padding-left:10px;
   padding-right:10px;
   }
+  #legend ul 
+  {
+      list-type:circle;
+      margin:0;
+      padding-left:1em;
+      paddding-top:0;}
+  .smallGreen{
+      list-style-image:url(../img/smallgreen.png);
+  }
+  .smallRed{
+  list-style-image:url(../img/smallred.png);
+  }
+  .smallYellow{
+  list-style-image:url(../img/smallyellow.png);
+  }
+  .greenLine{
+  list-style-image:url(../img/greenline.png);
+  }
+  .darkBlue{
+     list-style-image:url(../img/darkblue.png);
+      }
   #logo{
    position:absolute;
    bottom:20px;
