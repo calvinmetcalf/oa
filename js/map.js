@@ -91,9 +91,7 @@ var numRows = response.getDataTable().getNumberOfRows();
       var ftData = response.getDataTable().getValue(i, 0);
       if (!ftData)
      { continue;}
-     else if
-     (String(ftData).indexOf(",")>-1)
-     {continue;}
+    
      else
      { var newoption = document.createElement('option');
       newoption.setAttribute('value',querryText + ftData + "'");
