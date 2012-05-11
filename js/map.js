@@ -1,6 +1,6 @@
 var m;
 var baseid = 1632887;
-var oaid = 3145994;
+var oaid = 3871613;
 var geocoder = new google.maps.Geocoder();
 var zoom = 8;
 var center = new google.maps.LatLng(42.04113400940814,-71.795654296875);
@@ -32,7 +32,7 @@ var baseLayer = new google.maps.FusionTablesLayer(baseid);
   baseLayer.setOptions({suppressInfoWindows:true});
   
  mainLayer = new google.maps.FusionTablesLayer(oaid);
-  mainLayer.setQuery("SELECT 'point' FROM " + oaid + " WHERE 'Status' = 'Active'");
+  mainLayer.setQuery("SELECT 'Point' FROM " + oaid + " WHERE 'problem' = ''");
   mainLayer.setMap(m);
   }
 
@@ -75,9 +75,9 @@ function MakePopList(columnName,callfunc){
 	query.send(callfunc);
 	}
 
-var getSignData = MakeData("signType"," AND 'SignType' like '")
-var getHolderData = MakeData("holderName"," AND 'PermitHoldersName' like '")
-var getMuniData = MakeData("cityTown"," AND 'SignCity' like '")
+var getSignData = MakeData("signType"," AND 'SignType' like '");
+var getHolderData = MakeData("holderName"," AND 'PermitHoldersName' like '");
+var getMuniData = MakeData("cityTown"," AND 'SignCity' like '");
 
 function MakeData(selectID,querryText){
 
@@ -108,14 +108,14 @@ function changeMap() {
   var signType = document.getElementById('signType').value.replace("'", "\\'");
   var holderName = document.getElementById('holderName').value.replace("'", "\\'");
   var cityTown = document.getElementById('cityTown').value.replace("'", "\\'");
-  mainLayer.setQuery("SELECT 'point' FROM " + oaid + " WHERE 'Status' = 'Active' " + signType + holderName + cityTown);
+  mainLayer.setQuery("SELECT 'Point' FROM " + oaid + " WHERE 'problem' = '' " + signType + holderName + cityTown);
  
 }
 
 
 function lookupPermit() {
   var permitNum = document.getElementById('permitNumber').value.replace("'", "\\'");
-  mainLayer.setQuery("SELECT 'point' FROM " + oaid + " WHERE 'PermitNumber' = '" + permitNum + "'");
+  mainLayer.setQuery("SELECT 'Point' FROM " + oaid + " WHERE  WHERE 'problem' = '' and 'Permit' = '" + permitNum + "'");
   var centerQueryText = encodeURIComponent("SELECT 'Latitude', 'Longitude' FROM " + oaid + " WHERE 'PermitNumber' = '" + permitNum + "'");
  /*I have no idea why "'PermitNumber' = " works here but "'PermitNumber' CONTAINS" does not*/
  var centerQuery = new google.visualization.Query('http://www.google.com/fusiontables/gvizdata?tq='  + centerQueryText);
