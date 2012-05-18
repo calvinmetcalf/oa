@@ -14,15 +14,22 @@ Outdoor Advertising
     <body>
     <div id="tabs">
     <ul>
-        <li><a href="#tabs-1">Query</a></li>
-        <li><a href="#tabs-2">Look Up</a></li>
-        </ul>
-            <div id="tabs-1">
+    <li><a href="#tabs-1">Search</a></li>
+        <li><a href="#tabs-2">Query</a></li>
+        <li><a href="#tabs-3">Look Up</a></li>
+        </ul>    
+	<div id="tabs-1">
+		 <input type="text" id="address" style="width:16em;" placeholder="Enter an Address or LatLong" />
+  <input type="submit" value="Search"  id='geocode'/>
+  <input type="reset" value="Reset" id='resetgeo'/>
+
+        </div>
+            <div id="tabs-2">
             <select class="signType"><option value="all">All Types</option></select>
              <select class="holders"><option value="all">All Permit Holders</option></select>
               <select class="city"><option value="all">All Cities and Towns</option></select>
             </div>
-            <div id="tabs-2">
+            <div id="tabs-3">
             <input type="text" id="permitNumber" placeholder="Permit Number"  />
   <input type="submit" value="Look Up" id='sper'/>
   <input type="reset" value="Reset" id='rper'/>

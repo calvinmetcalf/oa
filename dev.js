@@ -5,6 +5,8 @@ var g = google.maps;
 var center = new g.LatLng(41.914541,-71.592407);
 var infowindow = new g.InfoWindow();
 var pN =[];
+var geocoder = new g.Geocoder();
+var geomarker;
 
 
 
@@ -133,3 +135,25 @@ $.each(d,function(i,s){
 }
 );
 }
+
+$('#geocode').click(function(){
+    geocoder.geocode( { 'address': $("#address").val()}, function(results, status) {
+      if (status == g.GeocoderStatus.OK) {
+        m.setCenter(results[0].geometry.location);
+        m.setZoom(14);
+     geomarker = new g.Marker({
+            map: m, 
+            position: results[0].geometry.location
+        });
+      } else {
+        alert("Geocode was not successful for the following reason: " + status);
+      }
+    });
+}
+);
+
+$('#resetgeo').click(function(){
+      m.setCenter(center);
+    m.setZoom(zoom);
+geomarker.setMap(null);
+});
