@@ -6,6 +6,7 @@
     <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyBvl2Lx_Tj-9N_fT9arfnl8utRkVPe50uA&sensor=false"></script>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js"></script>
+ <script type="text/javascript" src="http://calvinmetcalf.github.com/jquery-placeholder/jquery.placeholder.min.js"></script>
        <title>
 Outdoor Advertising
 </title>
@@ -14,11 +15,18 @@ Outdoor Advertising
     <div id="tabs">
     <ul>
         <li><a href="#tabs-1">Query</a></li>
+        <li><a href="#tabs-2">Look Up</a></li>
         </ul>
             <div id="tabs-1">
             <select class="signType"><option value="all">All Types</option></select>
              <select class="holders"><option value="all">All Permit Holders</option></select>
               <select class="city"><option value="all">All Cities and Towns</option></select>
+            </div>
+            <div id="tabs-2">
+            <input type="text" id="permitNumber" placeholder="Permit Number"  />
+  <input type="submit" value="Look Up" id='sper'/>
+  <input type="reset" value="Reset" id='rper'/>
+            
             </div>
             </div>
 <div id='map'></div>

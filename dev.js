@@ -4,6 +4,7 @@ var zoom = 8;
 var g = google.maps;
 var center = new g.LatLng(41.914541,-71.592407);
 var infowindow = new g.InfoWindow();
+var pN =[];
 
 
 
@@ -12,6 +13,8 @@ $(function() {
         	collapsible: true,
             selected: -1
 		});
+          $( "input:submit,input:reset" ).button();
+        $('input, textarea').placeholder();
    m = new g.Map(document.getElementById('map'), {
       center: center,
       zoom: zoom,
@@ -45,6 +48,9 @@ $.each(d,function(i,s){
     }
     if($.inArray(city,cities)==-1){
         cities.push(city);
+    }
+    if($.inArray(permit,pN)==-1){
+        pN.push(permit);
     }
     if(s.Icon == "small_red"){
         icon = new google.maps.MarkerImage("img/smallred.png");
@@ -81,6 +87,10 @@ $.each(types,function(i,t){
 }
     
     );
+    $( "#permitNumber" ).autocomplete({
+        	source: pN,
+             minLength: 1
+		});
 };
 
 var getStuff = function(url){
@@ -91,9 +101,27 @@ function(data){
 }, 'JSONP');   
 };
 
-
+$('#sper').click(function(){
+    var perno = $('#permitNumber').val();
+    $.each(d,function(i,s){
+    if(s.Permit==perno){
+        s.marker.setMap(m);
+    }else{
+        s.marker.setMap(null);
+    }
+    });
+}
+    
+    );
+$('#rper').click(function(){
+    qMap();
+});
 $("select").change(function(){
-var t = $('.signType').val();    
+qMap();
+});
+
+var qMap = function(){
+    var t = $('.signType').val();    
 var h = $('.holders').val();
 var c = $('.city').val();
 $.each(d,function(i,s){
@@ -104,4 +132,4 @@ $.each(d,function(i,s){
     }
 }
 );
-});
+}
