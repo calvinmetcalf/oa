@@ -1,11 +1,10 @@
-var l,m;
+var l,m,perall,pr;
 $(function() {
-var perall;
 var holders =[];
 var towns=[];
 var q={PermitHoldersName:"all",SignType:"all",SignCity:"all"};
 uiStuff();
-var g = google.maps
+var g = google.maps;
 var zoom = 8;
 var center = new g.LatLng(42.04113400940814,-71.795654296875);
 var oaid ="18liLCxH6xy9glonqX4HY2xb3yyKdOT5eTQl9XFs";
@@ -43,10 +42,11 @@ function fillCharts(data){
      }
      );
 makeLists();
+ makePer(data);
 }
 function makeLists(){
     mSList("PermitHoldersName","All Permit Holders",holders);
-    mSList("Permits","Select a Permet",perall);
+   
     mSList("SignType","All Sign Types",["Digital","Street Furniture","Traditional Display"]);
     mSList("SignCity","All Cities/Towns",towns);
     $(".np").change(np);
@@ -61,22 +61,27 @@ function np(){
     });
     if(qp.length>0){
      l.query.where =qp.join(" and ");
-     $.get(burl +"Permit"+ eurl+"+WHERE+"+qp.join(" and ")+key,makePer,"JSONP");
-    }else{
-        l.query.where =""
-       mSList("Permits","Select a Permet",perall);
-    }
+    $.get(burl +"Permit"+ eurl+"+WHERE+"+qp.join(" and ")+key,makePer,"JSONP");
     l.setMap(m)
+}else{
+    
+    l.query.where="";
+    l.setMap(m);
+    ac(perall)
 }
-
+}
 function makePer(data){
     if(data.rows){
   pr= $.map(data.rows,function(v){  
        return v[0].split(" and ")  
      }
      );
-    mSList("Permits","Select a Permit",pr);
-}
+     ac(pr)
+    }}
+function ac(p){
+    $("#permitT").autocomplete({source:p});
+    
+    
 }
 function pushU(array,value){
     if($.inArray(value,array)===-1){
@@ -91,19 +96,17 @@ function mSList(i,messege,a){
    });
 
 }
-$("#Permits").change(function(){
-    var p = $("#Permits").val();
-    if(p=='all'){
-        np();
-        
-    }else{
-    l.query.where = "Permit contains '"+p+"'";
-    mSList("Permits","Select a Permit",[p]);
-    $("#Permits option:last-child").attr("selected", "selected");
+$("#LookUp").click(function(){
+var val = $("#permitT").val();
+if(val===""){
+    np();
+}else{
+    l.query.where="Permit contains '" + val +"'";
     l.setMap(m);
 }
-}
-    )
+
+});
+$("#resetpermit").click(np)
 geocoder("geocode","address","resetgeo");
 function geocoder(geof,addrf,resetf){
     var ozoom = m.getZoom();
