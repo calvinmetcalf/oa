@@ -152,7 +152,7 @@ function uiStuff(){
         $( "input:submit,input:reset" ).button();
         $('input, textarea').placeholder();
 }
-// Define the overlay, derived from google.maps.OverlayView
+// from http://www.barattalo.it/2009/12/19/ruler-for-google-maps-v3-to-measure-distance-on-map/
 function Label(opt_options) {
     // Initialization
 	this.setValues(opt_options);
