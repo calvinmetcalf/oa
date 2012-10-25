@@ -16,7 +16,7 @@ m = new g.Map(document.getElementById('map'), {
       zoom: zoom,
       mapTypeId: 'roadmap'
 });
-var r = {};
+var ruler={};
 g.event.addListener(m,"rightclick",addruler);
 var baseLayer = new g.FusionTablesLayer({
    query:  {
@@ -211,61 +211,71 @@ Label.prototype.draw = function() {
 
 	this.span_.innerHTML = this.get('text').toString();
 };
+
 function addruler(event) {
- 
-    var ruler1 = new g.Marker({
+ if(ruler.open){
+     g.event.clearListeners(ruler.ruler1, 'drag');
+     g.event.clearListeners(ruler.ruler2, 'drag');
+     ruler.ruler1.setMap(null);
+      ruler.ruler2.setMap(null);
+      ruler.ruler1label.setMap(null);
+ruler.ruler2label.setMap(null);
+ ruler.rulerpoly.setMap(null);
+ }else{ruler.open=true};
+    ruler.ruler1 = new g.Marker({
         position: event.latLng ,
         map: m,
         draggable: true
     });
  
-    var ruler2 = new g.Marker({
+    ruler.ruler2 = new g.Marker({
         position: event.latLng ,
         map: m,
         draggable: true
     });
      
-    var ruler1label = new Label({ map: m });
-    var ruler2label = new Label({ map: m });
-    ruler1label.bindTo('position', ruler1, 'position');
-    ruler2label.bindTo('position', ruler2, 'position');
+    ruler.ruler1label = new Label({ map: m });
+    ruler.ruler2label = new Label({ map: m });
+    ruler.ruler1label.bindTo('position', ruler.ruler1, 'position');
+    ruler.ruler2label.bindTo('position', ruler.ruler2, 'position');
  
-    var rulerpoly = new g.Polyline({
-        path: [ruler1.position, ruler2.position] ,
+    ruler.rulerpoly = new g.Polyline({
+        path: [ruler.ruler1.position, ruler.ruler2.position] ,
         strokeColor: "#FFFF00",
         strokeOpacity: 0.7,
         strokeWeight: 8
     });
-    rulerpoly.setMap(m);
+    ruler.rulerpoly.setMap(m);
  
-    ruler1label.set('text',"0m");
-    ruler2label.set('text',"0m");
+    ruler.ruler1label.set('text',"0m");
+    ruler.ruler2label.set('text',"0m");
  
-    g.event.addListener(ruler1, 'drag', function() {
-        rulerpoly.setPath([ruler1.getPosition(), ruler2.getPosition()]);
-        ruler1label.set('text',distance( ruler1.getPosition().lat(), ruler1.getPosition().lng(), ruler2.getPosition().lat(), ruler2.getPosition().lng()));
-        ruler2label.set('text',distance( ruler1.getPosition().lat(), ruler1.getPosition().lng(), ruler2.getPosition().lat(), ruler2.getPosition().lng()));
+    g.event.addListener(ruler.ruler1, 'drag', function() {
+        ruler.rulerpoly.setPath([ruler.ruler1.getPosition(), ruler.ruler2.getPosition()]);
+        ruler.ruler1label.set('text',distance( ruler.ruler1.getPosition().lat(), ruler.ruler1.getPosition().lng(), ruler.ruler2.getPosition().lat(), ruler.ruler2.getPosition().lng()));
+        ruler.ruler2label.set('text',distance( ruler.ruler1.getPosition().lat(), ruler.ruler1.getPosition().lng(), ruler.ruler2.getPosition().lat(), ruler.ruler2.getPosition().lng()));
     });
  
-    g.event.addListener(ruler2, 'drag', function() {
-        rulerpoly.setPath([ruler1.getPosition(), ruler2.getPosition()]);
-        ruler1label.set('text',distance( ruler1.getPosition().lat(), ruler1.getPosition().lng(), ruler2.getPosition().lat(), ruler2.getPosition().lng()));
-        ruler2label.set('text',distance( ruler1.getPosition().lat(), ruler1.getPosition().lng(), ruler2.getPosition().lat(), ruler2.getPosition().lng()));
+    g.event.addListener(ruler.ruler2, 'drag', function() {
+        ruler.rulerpoly.setPath([ruler.ruler1.getPosition(), ruler.ruler2.getPosition()]);
+        ruler.ruler1label.set('text',distance( ruler.ruler1.getPosition().lat(), ruler.ruler1.getPosition().lng(), ruler.ruler2.getPosition().lat(), ruler.ruler2.getPosition().lng()));
+        ruler.ruler2label.set('text',distance( ruler.ruler1.getPosition().lat(), ruler.ruler1.getPosition().lng(), ruler.ruler2.getPosition().lat(), ruler.ruler2.getPosition().lng()));
     });
- 
-}
-function distance(lat1,lon1,lat2,lon2) {
-    var R = 6371; // km (change this constant to get miles)
+ function distance(lat1,lon1,lat2,lon2) {
+    var R = 3959; // km (change this constant to get miles)
     var dLat = (lat2-lat1) * Math.PI / 180;
     var dLon = (lon2-lon1) * Math.PI / 180; 
     var a = Math.sin(dLat/2) * Math.sin(dLat/2) +
         Math.cos(lat1 * Math.PI / 180 ) * Math.cos(lat2 * Math.PI / 180 ) * 
         Math.sin(dLon/2) * Math.sin(dLon/2); 
-    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+    var c = 2 * Math.asin(Math.sqrt(a));
     var d = R * c;
-    if (d>1) return Math.round(d)+"km";
-    else if (d<=1) return Math.round(d*1000)+"m";
+    if (d>1) return Math.round(d)+"m";
+    else if (d<=1) return Math.round(d*5280)+"ft";
     return d;
 }
+
+}
+
 
 });
