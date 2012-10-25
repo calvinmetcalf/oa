@@ -16,8 +16,22 @@ m = new g.Map(document.getElementById('map'), {
       zoom: zoom,
       mapTypeId: 'roadmap'
 });
-var ruler={};
-g.event.addListener(m,"rightclick",addruler);
+var r = new Ruler({map:m});
+g.event.addListener(m,"rightclick",function(e){
+    r.setPosition(e.latLng);
+    if(!$('input:checkbox:checked').val()){
+    $( "#measure" ).attr('checked','checked').button("refresh");
+}
+});
+$( "#measure" ).click(
+    function(){
+         if($('input:checkbox:checked').val()){
+             r.setPosition(m.getCenter());
+         }else{
+             r.setPosition(null);
+         }
+    }
+    );
 var baseLayer = new g.FusionTablesLayer({
    query:  {
       select :'geometry',
@@ -150,14 +164,53 @@ function uiStuff(){
             selected: -1
 		});
         $( "input:submit,input:reset" ).button();
+        $( "#measure" ).button();
         $('input, textarea').placeholder();
 }
-// from http://www.barattalo.it/2009/12/19/ruler-for-google-maps-v3-to-measure-distance-on-map/
+
+
+});
+
+
+
+function Ruler(obj){
+    var _this=this;
+    _this.g = google.maps;
+    _this.map = obj.map || null;
+    _this.position = obj.position || null;
+    
+    _this.setMap = function(m){
+        _this.map=m;
+        test();
+    };
+    _this.setPosition = function(m){
+        _this.position=m;
+        test();
+    };
+    function test(){
+        if(_this.open){
+     remove();
+     _this.open = 0;
+ }
+        if(_this.map &&_this.position){
+         add();   
+        }
+    }
+    function remove(){
+     _this.g.event.clearListeners(_this.ruler1, 'drag');
+     _this.g.event.clearListeners(_this.ruler2, 'drag');
+     _this.ruler1.setMap(null);
+      _this.ruler2.setMap(null);
+      _this.ruler1label.setMap(null);
+_this.ruler2label.setMap(null);
+ _this.rulerpoly.setMap(null);   
+    }
+    // from http://www.barattalo.it/2009/12/19/ruler-for-google-maps-v3-to-measure-distance-on-map/
 function Label(opt_options) {
     // Initialization
-	this.setValues(opt_options);
+    this.setValues(opt_options);
 
-	// Label specific
+    // Label specific
 	var span = this.span_ = document.createElement('span');
 	span.style.cssText = 'position: relative; left: 0%; top: -8px; ' +
                 'white-space: nowrap; border: 0px; font-family:arial; font-weight:bold;' +
@@ -172,7 +225,7 @@ function Label(opt_options) {
 	div.appendChild(span);
 	div.style.cssText = 'position: absolute; display: none';
 }
-Label.prototype = new g.OverlayView();
+Label.prototype = new _this.g.OverlayView();
 
 // Implement onAdd
 Label.prototype.onAdd = function() {
@@ -183,9 +236,9 @@ Label.prototype.onAdd = function() {
 	// Ensures the label is redrawn if the text or position is changed.
 	var me = this;
 	this.listeners_ = [
-		g.event.addListener(this, 'position_changed',
+		_this.g.event.addListener(this, 'position_changed',
 		function() { me.draw(); }),
-		g.event.addListener(this, 'text_changed',
+		_this.g.event.addListener(this, 'text_changed',
 		function() { me.draw(); })
 	];
 	
@@ -195,7 +248,7 @@ Label.prototype.onAdd = function() {
 Label.prototype.onRemove = function() { this.div_.parentNode.removeChild(this.div_ );
 	// Label is removed from the map, stop updating its position/text.
 	for (var i = 0, I = this.listeners_.length; i < I; ++i) {
-		g.event.removeListener(this.listeners_[i]);
+		_this.g.event.removeListener(this.listeners_[i]);
 	}
 };
 
@@ -211,55 +264,46 @@ Label.prototype.draw = function() {
 
 	this.span_.innerHTML = this.get('text').toString();
 };
-
-function addruler(event) {
- if(ruler.open){
-     g.event.clearListeners(ruler.ruler1, 'drag');
-     g.event.clearListeners(ruler.ruler2, 'drag');
-     ruler.ruler1.setMap(null);
-      ruler.ruler2.setMap(null);
-      ruler.ruler1label.setMap(null);
-ruler.ruler2label.setMap(null);
- ruler.rulerpoly.setMap(null);
- }else{ruler.open=true};
-    ruler.ruler1 = new g.Marker({
-        position: event.latLng ,
-        map: m,
+    function add(){
+        _this.open=true
+    _this.ruler1 = new _this.g.Marker({
+        position: _this.position ,
+        map: _this.map,
         draggable: true
     });
  
-    ruler.ruler2 = new g.Marker({
-        position: event.latLng ,
-        map: m,
+    _this.ruler2 = new _this.g.Marker({
+        position: _this.position ,
+        map: _this.map,
         draggable: true
     });
      
-    ruler.ruler1label = new Label({ map: m });
-    ruler.ruler2label = new Label({ map: m });
-    ruler.ruler1label.bindTo('position', ruler.ruler1, 'position');
-    ruler.ruler2label.bindTo('position', ruler.ruler2, 'position');
+    _this.ruler1label = new Label({ map: _this.map });
+    _this.ruler2label = new Label({ map: _this.map });
+    _this.ruler1label.bindTo('position', _this.ruler1, 'position');
+    _this.ruler2label.bindTo('position', _this.ruler2, 'position');
  
-    ruler.rulerpoly = new g.Polyline({
-        path: [ruler.ruler1.position, ruler.ruler2.position] ,
+    _this.rulerpoly = new _this.g.Polyline({
+        path: [_this.ruler1.position, _this.ruler2.position] ,
         strokeColor: "#FFFF00",
         strokeOpacity: 0.7,
         strokeWeight: 8
     });
-    ruler.rulerpoly.setMap(m);
+    _this.rulerpoly.setMap(_this.map);
  
-    ruler.ruler1label.set('text',"0m");
-    ruler.ruler2label.set('text',"0m");
+    _this.ruler1label.set('text',"0ft");
+    _this.ruler2label.set('text',"0ft");
  
-    g.event.addListener(ruler.ruler1, 'drag', function() {
-        ruler.rulerpoly.setPath([ruler.ruler1.getPosition(), ruler.ruler2.getPosition()]);
-        ruler.ruler1label.set('text',distance( ruler.ruler1.getPosition().lat(), ruler.ruler1.getPosition().lng(), ruler.ruler2.getPosition().lat(), ruler.ruler2.getPosition().lng()));
-        ruler.ruler2label.set('text',distance( ruler.ruler1.getPosition().lat(), ruler.ruler1.getPosition().lng(), ruler.ruler2.getPosition().lat(), ruler.ruler2.getPosition().lng()));
+    _this.g.event.addListener(_this.ruler1, 'drag', function() {
+        _this.rulerpoly.setPath([_this.ruler1.getPosition(), _this.ruler2.getPosition()]);
+        _this.ruler1label.set('text',distance( _this.ruler1.getPosition().lat(), _this.ruler1.getPosition().lng(), _this.ruler2.getPosition().lat(), _this.ruler2.getPosition().lng()));
+        _this.ruler2label.set('text',distance( _this.ruler1.getPosition().lat(), _this.ruler1.getPosition().lng(), _this.ruler2.getPosition().lat(), _this.ruler2.getPosition().lng()));
     });
  
-    g.event.addListener(ruler.ruler2, 'drag', function() {
-        ruler.rulerpoly.setPath([ruler.ruler1.getPosition(), ruler.ruler2.getPosition()]);
-        ruler.ruler1label.set('text',distance( ruler.ruler1.getPosition().lat(), ruler.ruler1.getPosition().lng(), ruler.ruler2.getPosition().lat(), ruler.ruler2.getPosition().lng()));
-        ruler.ruler2label.set('text',distance( ruler.ruler1.getPosition().lat(), ruler.ruler1.getPosition().lng(), ruler.ruler2.getPosition().lat(), ruler.ruler2.getPosition().lng()));
+    _this.g.event.addListener(_this.ruler2, 'drag', function() {
+        _this.rulerpoly.setPath([_this.ruler1.getPosition(), _this.ruler2.getPosition()]);
+        _this.ruler1label.set('text',distance( _this.ruler1.getPosition().lat(), _this.ruler1.getPosition().lng(), _this.ruler2.getPosition().lat(), _this.ruler2.getPosition().lng()));
+        _this.ruler2label.set('text',distance( _this.ruler1.getPosition().lat(), _this.ruler1.getPosition().lng(), _this.ruler2.getPosition().lat(), _this.ruler2.getPosition().lng()));
     });
  function distance(lat1,lon1,lat2,lon2) {
     var R = 3959; // km (change this constant to get miles)
@@ -274,8 +318,8 @@ ruler.ruler2label.setMap(null);
     else if (d<=1) return Math.round(d*5280)+"ft";
     return d;
 }
-
+        
+    }
+    test();
+    return _this;
 }
-
-
-});
