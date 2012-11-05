@@ -8,9 +8,9 @@ uiStuff();
 var g = google.maps;
 var zoom = 8;
 var center = new g.LatLng(42.04113400940814,-71.795654296875);
-var oaid ="18liLCxH6xy9glonqX4HY2xb3yyKdOT5eTQl9XFs";
+var oaid ="1pKcL56yFhuvMwotxhBfyORvj6a6vC632YSjY9k4";
 var burl = "https://www.googleapis.com/fusiontables/v1/query?sql=SELECT+"
-var eurl = "+FROM+18liLCxH6xy9glonqX4HY2xb3yyKdOT5eTQl9XFs"
+var eurl = "+FROM+1pKcL56yFhuvMwotxhBfyORvj6a6vC632YSjY9k4"
 var key ="&key=AIzaSyBvl2Lx_Tj-9N_fT9arfnl8utRkVPe50uA"
 var m = new g.Map(document.getElementById('map'), {
       center: center,
@@ -42,7 +42,7 @@ var baseLayer = new g.FusionTablesLayer({
    map:m
     });
 var l = new g.FusionTablesLayer({
- query:{select:'Point',
+ query:{select:'Latitude',
  from:oaid},
  map:m
      
