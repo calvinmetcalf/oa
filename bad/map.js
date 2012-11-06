@@ -14,25 +14,37 @@ var mopt = {
 var osm = L.tileLayer("http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{attribution:osmDataAttr})
 var mq=L.tileLayer(mopt.url,mopt.options);
 mq.addTo(m);
-var badSign=L.geoJson('',{onEachFeature:popUp}).addTo(m);
+var clusters = new L.MarkerClusterGroup();
+var badSign=L.geoJson('',{onEachFeature:popUp});
 
-$.get("badsign.geojson",function(d){badSign.addData(d);},"JSON");
+$.get("badsign.geojson",function(d){
+    badSign.addData(d);
+    badSign.eachLayer(function (l) { 
+        clusters.addLayer(l); 
+        
+    });
+    clusters.addTo(m);
+    lc.addTo(m);
+},"JSON");
 var baseMaps = {
     "Map Quest": mq,
     "Open Street Map":osm
 }
 var overlayMaps = {
-    "Bad Signs":badSign
+    "Bad Signs":clusters
     
 }
 var lc=L.control.layers(baseMaps, overlayMaps);
-lc.addTo(m);
+
 function popUp(f,l){
     var out = [];
     if (f.properties){
-        for(key in f.properties){
-            out.push(key+": "+f.properties[key]);
-        }
+         out.push("Permit: " + f.properties.Permit);
+        out.push("Sign Type: " + f.properties.SignType);
+        out.push("Lat Lng located in: " + f.properties.PhysicalTown);
+        out.push("Data Base says it's in: " + f.properties.SignCity);
+        
+        
         l.bindPopup(out.join("<br />"));
     }
 }
