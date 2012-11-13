@@ -45,6 +45,9 @@
    right:15px;
    z-index:11;
   }
+  .redOval{
+     list-style-image:url(img/redOval.png);
+      }
   
   dl.oainfo
 {
