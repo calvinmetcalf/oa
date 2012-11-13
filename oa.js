@@ -33,14 +33,23 @@ $( "#measure" ).click(
          }
     }
     );
-var baseLayer = new g.FusionTablesLayer({
+var baseLayers = {
+    exclutions:new g.FusionTablesLayer({
+   query:  {
+      select :'geometry',
+      from: '1N-LOtsRGsfTzNCqXT44Wl5L4NC_Plug9Qhiygbg'
+       },
+   clickable:false,
+   map:m
+    }),roads:new g.FusionTablesLayer({
    query:  {
       select :'geometry',
       from: '1hWdQ52PcSHXu1hzfJtsD3js2baur_3BZFjVm8vA'
        },
    clickable:false,
    map:m
-    });
+    })
+}
 var l = new g.FusionTablesLayer({
  query:{select:'Latitude',
  from:oaid},
