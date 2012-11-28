@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 /*! http://mths.be/placeholder v2.0.5 by @mathias */;(function(f,h,$){var a='placeholder' in h.createElement('input'),d='placeholder' in h.createElement('textarea'),i=$.fn,c=$.valHooks,k,j;if(a&&d){j=i.placeholder=function(){return this};j.input=j.textarea=true}else{j=i.placeholder=function(){var l=this;l.filter((a?'textarea':':input')+'[placeholder]').not('.placeholder').bind({'focus.placeholder':b,'blur.placeholder':e}).data('placeholder-enabled',true).trigger('blur.placeholder');return l};j.input=a;j.textarea=d;k={get:function(m){var l=$(m);return l.data('placeholder-enabled')&&l.hasClass('placeholder')?'':m.value},set:function(m,n){var l=$(m);if(!l.data('placeholder-enabled')){return m.value=n}if(n==''){m.value=n;if(m!=h.activeElement){e.call(m)}}else{if(l.hasClass('placeholder')){b.call(m,true,n)||(m.value=n)}else{m.value=n}}return l}};a||(c.input=k);d||(c.textarea=k);$(function(){$(h).delegate('form','submit.placeholder',function(){var l=$('.placeholder',this).each(b);setTimeout(function(){l.each(e)},10)})});$(f).bind('beforeunload.placeholder',function(){$('.placeholder').each(function(){this.value=''})})}function g(m){var l={},n=/^jQuery\d+$/;$.each(m.attributes,function(p,o){if(o.specified&&!n.test(o.name)){l[o.name]=o.value}});return l}function b(m,n){var l=this,o=$(l);if(l.value==o.attr('placeholder')&&o.hasClass('placeholder')){if(o.data('placeholder-password')){o=o.hide().next().show().attr('id',o.removeAttr('id').data('placeholder-id'));if(m===true){return o[0].value=n}o.focus()}else{l.value='';o.removeClass('placeholder')}}}function e(){var q,l=this,p=$(l),m=p,o=this.id;if(l.value==''){if(l.type=='password'){if(!p.data('placeholder-textinput')){try{q=p.clone().attr({type:'text'})}catch(n){q=$('<input>').attr($.extend(g(this),{type:'text'}))}q.removeAttr('name').data({'placeholder-password':true,'placeholder-id':o}).bind('focus.placeholder',b);p.data({'placeholder-textinput':q,'placeholder-id':o}).before(q)}p=p.removeAttr('id').hide().prev().attr('id',o).show()}p.addClass('placeholder');p[0].value=p.attr('placeholder')}else{p.removeClass('placeholder')}}}(this,document,jQuery));
+=======
+>>>>>>> l
 var m = new L.Map("map", {
     center: new L.LatLng(42.2, -71),
     zoom: 8,
@@ -15,6 +18,7 @@ var mopt = {
 var osm = L.tileLayer("http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{attribution:osmDataAttr})
 var mq=L.tileLayer(mopt.url,mopt.options);
 mq.addTo(m);
+<<<<<<< HEAD
 var clusters = new L.MarkerClusterGroup();
 var badSign=L.geoJson('',{onEachFeature:popUp});
 
@@ -27,11 +31,17 @@ $.get("badsign.geojson",function(d){
     clusters.addTo(m);
     lc.addTo(m);
 },"JSON");
+=======
+var badSign=L.geoJson('',{onEachFeature:popUp}).addTo(m);
+
+$.get("badsign.geojson",function(d){badSign.addData(d);},"JSON");
+>>>>>>> l
 var baseMaps = {
     "Map Quest": mq,
     "Open Street Map":osm
 }
 var overlayMaps = {
+<<<<<<< HEAD
     "Bad Signs":clusters
     
 }
@@ -46,6 +56,19 @@ function popUp(f,l){
         out.push("Data Base says it's in: " + f.properties.SignCity);
         
         
+=======
+    "Bad Signs":badSign
+    
+}
+var lc=L.control.layers(baseMaps, overlayMaps);
+lc.addTo(m);
+function popUp(f,l){
+    var out = [];
+    if (f.properties){
+        for(key in f.properties){
+            out.push(key+": "+f.properties[key]);
+        }
+>>>>>>> l
         l.bindPopup(out.join("<br />"));
     }
 }
@@ -65,7 +88,10 @@ $(function() {
             selected: -1
     });
     $( "input:submit,input:reset" ).button();
+<<<<<<< HEAD
     $('input, textarea').placeholder();
+=======
+>>>>>>> l
 $("#geocoder").submit(geocode);
 $("#resetgeo").click(resetgeo);
 $("#getStatus").change(function(){
