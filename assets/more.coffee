@@ -29,3 +29,4 @@ $ ()->
 		false
 	$("#geocoder").submit geocode
 	$("#resetgeo").click resetgeo
+	$('input, textarea').placeholder()

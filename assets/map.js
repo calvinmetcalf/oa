@@ -124,7 +124,6 @@ $(function(){
     div.empty();
     var frag  = document.createDocumentFragment(); 
     makeOptions("all","all "+id);
-    console.log(values[id].length)
     if(values[id].length>1){
     values[id].forEach(makeOptions);
     }else{

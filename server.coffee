@@ -4,7 +4,7 @@ fs=require 'fs'
 uglify = require 'uglify-js'
 app = express()
 recompile=()->
-    scripts = ["jquery.1.8.3.js","jquery-ui.1.9.2.js","leaflet-src.js","leaflet-hash.js","leaflet-providers.js","leaflet.ajax.js","map.js","more.coffee"].map (v)->
+    scripts = ["jquery.1.8.3.js","jquery-ui.1.9.2.js","leaflet-src.js","jquery.placeholder.js","leaflet-hash.js","leaflet-providers.js","leaflet.ajax.js","map.js","more.coffee"].map (v)->
         if v.slice(-2)=="js"
             fs.readFileSync "./assets/"+v
         else if v.slice(-6)=="coffee"
