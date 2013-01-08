@@ -7,7 +7,7 @@ var baseMaps = [
     "Stamen.TerrainBackground",
     "Stamen.Watercolor"
 ];
-var values={};
+var values={},state={};
 var oa = L.geoJson.ajax("oa.geojson",{style:onEach,pointToLayer:point2layer,onEachFeature:onEachFeature}).addTo(m);
 
 var overlayMaps = {"Outdoor Advertising":oa};
@@ -50,6 +50,7 @@ function addValues(v){
 function query(obj){
     if(obj){
     values = {};
+    state=obj;
     oa.refilter(function(v){
         
         if(Object.keys(obj).every(function(k){
@@ -60,6 +61,7 @@ function query(obj){
         }
     });
     }else{
+    	state={};
         oa.refilter(function(v){
             addValues(v.properties);
             return true;
@@ -124,10 +126,10 @@ $(function(){
     div.empty();
     var frag  = document.createDocumentFragment(); 
     makeOptions("all","all "+id);
-    if(values[id].length>1){
-    values[id].forEach(makeOptions);
+    if(id in state){
+     makeOptions(values[id][0],values[id][0],"unique");
     }else{
-        makeOptions(values[id][0],values[id][0],"unique");
+       values[id].forEach(makeOptions);
     }
     div.append(frag);
     
