@@ -1,66 +1,36 @@
 <!DOCTYPE html>
 <html>
-  <head>
- 
-  <link rel="shortcut icon" href="img/favicon.ico"/>
-  <title>
-Outdoor Advertising
-</title>
-<link rel="stylesheet" href="oa.css" type="text/css" />
-<link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/themes/smoothness/jquery-ui.css" type="text/css" />
-<script type="text/javascript" src="//www.google.com/jsapi"></script>
-<script type="text/javascript" src="//maps.googleapis.com/maps/api/js?key=AIzaSyBvl2Lx_Tj-9N_fT9arfnl8utRkVPe50uA&sensor=false"></script>
-<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
- <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js"></script>
+    <head>
+        <title>
+            OA
+        </title>
+        <link rel="stylesheet" href="map.css" type="text/css" />
+        <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.4.5/leaflet.css" />
+        <!--[if lte IE 8]>
+            <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.4.5/leaflet.ie.css" />
+        <![endif]-->
+        <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/themes/smoothness/jquery-ui.css" />
+        <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+        <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>
+        <script src="http://cdn.leafletjs.com/leaflet-0.4.5/leaflet.js"></script>
+        <script type="text/javascript" src="leaflet-hash.js"></script>
+        <script type="text/javascript" src="leaflet-providers.js"></script>
+        <script type="text/javascript" src="leaflet.ajax.js"></script>
+    </head>
+    <body>
 
-<script type="text/javascript" src="oa.js"></script>
-</head>
-<body>
-<div id="tabs">
-    <ul>
-        <li><a href="#tabs-1">Search</a></li>
-		<li><a href="#tabs-2">Query</a></li>
-	<li><a href="#tabs-3">Look Up</a></li>
-    <li><input type="checkbox" id="measure" value="measure"/><label for="measure">Measure</label></li>
-	</ul>
-	<div id="tabs-1">
-		 <input type="text" id="address" style="width:16em;" placeholder="Enter an Address or LatLong" />
-  <input type="submit" value="Search" id="geocode"/>
-  <input type="reset" value="Reset" id="resetgeo"/>
 
-        </div>
-	<div id="tabs-2">
-		<select id="SignType" class="np"></select>
-        <select id="PermitHoldersName" class="np"></select>
-         <select id="SignCity" class="np"></select>
-      
-	
-</div>    <div id="tabs-3"><input type="text" placeholder="Permit Number" id="permitT"/><input type ="submit" value="Look Up" id="LookUp"/><input type="reset" value="Reset" id="resetpermit"/></div></div>
-<div id="legend"><b>Legend</b><ul><li class="smallGreen">Digital Sign</li>
-<li class="smallRed">Traditional Sign</li>
-<li class="smallYellow">Street Furniture</li>
-<li class="greenLine">Scenic Byway</li>
-<li class="darkBlue">NHS</li><li class="redOval">Sign Free Areas</li></ul><a href="https://www.google.com/fusiontables/DataSource?docid=1pKcL56yFhuvMwotxhBfyORvj6a6vC632YSjY9k4" target="_blank" tabindex="90">
-View signs on Google<br />Fusion Tables</a><br/>
-<a href="https://www.googleapis.com/fusiontables/v1/query?sql=SELECT+*+FROM+1pKcL56yFhuvMwotxhBfyORvj6a6vC632YSjY9k4&key=AIzaSyBvl2Lx_Tj-9N_fT9arfnl8utRkVPe50uA" target="_blank">
-Download as JSON
-    
-</a><br/><a href="https://www.googleapis.com/fusiontables/v1/query?sql=SELECT+*+FROM+1pKcL56yFhuvMwotxhBfyORvj6a6vC632YSjY9k4&alt=csv&key=AIzaSyBvl2Lx_Tj-9N_fT9arfnl8utRkVPe50uA" 
-target="_blank">
-Download as CSV</a></div>
-<a id="logo" href="http://www.massdot.state.ma.us/planning" target="_blank"><img src="img/otp.png" alt="logo and link home" border="0"/></a>
-<div id="map"></div><script type="text/javascript">
-
-  var _gaq = _gaq || [];
-  _gaq.push(['_setAccount', 'UA-31218444-1']);
-  _gaq.push(['_trackPageview']);
-
-  (function() {
-    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-  })();
-
-</script>
-</body>
+        <div id="map"></div>
+        <script type="text/javascript" src="map.js"></script>
+        <script type="text/javascript">
+            var _gaq = _gaq || [];
+            _gaq.push(['_setAccount', 'UA-31218444-1']);
+            _gaq.push(['_trackPageview']);
+            (function() {
+                var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+                ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+                var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+            })();
+        </script>
+    </body>
 </html>
