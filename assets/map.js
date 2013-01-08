@@ -81,7 +81,7 @@ function reData(){
         return true;
     };
 oa.on("dataLoaded",function(){
-    oa._cache.features.forEach(function(v){
+    oa._cache.forEach(function(v){
         addValues(v.properties);
     });
     oa.fire("refiltered");
