@@ -25,9 +25,9 @@ L.GeoJSON.AJAX=L.GeoJSON.extend({
         var _this = this;
         _this._url = url;
         if(this.ajaxParams.dataType.toLowerCase()==="json"){
-          L.Util.ajax(url, function(data){_this._cache=data;_this.addData(data);}); 
+          L.Util.ajax(url, function(data){_this._cache=data;_this.addData(data);_this.fire("dataLoaded");}); 
         }else if(this.ajaxParams.dataType.toLowerCase()==="jsonp"){
-            L.Util.jsonp(url, function(data){_this._cache=data;_this.addData(data);}, _this.ajaxParams.callbackParam);
+            L.Util.jsonp(url, function(data){_this._cache=data;_this.addData(data);_this.fire("dataLoaded");}, _this.ajaxParams.callbackParam);
         }
     },
     refresh: function (url){
