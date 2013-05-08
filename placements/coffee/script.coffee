@@ -2,15 +2,21 @@ m = L.map('map',{maxZoom : 15}).setView [42.2, -71], 8
 lc=L.control.layers.provided(['MapQuestOpen.OSM',"OpenStreetMap.Mapnik"]).addTo m
 m.addHash
 	lc:lc
-
-excTile = L.tileLayer("http://tiles{s}.ro.lt/oa/{z}/{x}/{y}.png",
+popup = L.popup()
+xtowns = L.tileLayer "http://{s}.tiles.cartocdn.com/cwm/tiles/exclutions/{z}/{x}/{y}.png?cache_policy=persist&cache_buster=2013-05-08T14%3A11%3A38%2B02%3A00",
+	subdomains:[0,1,2,3]
+onEachFeature = (f,l)->
+	l.bindPopup f.properties.name
+xgrid = L.geoJson.ajax("json/exclutions.geojson",{style:{opacity:0.0,fillOpacity:0.0},onEachFeature: onEachFeature})
+townGroup = L.layerGroup([xtowns,xgrid]).addTo m
+lc.addOverlay townGroup, "Area Exclutions"
+excTile = L.tileLayer "http://tiles{s}.ro.lt/oa/{z}/{x}/{y}.png",
 	subdomains:[1,2,3,4]
 	opacity : 0.7
-	zIndex : 10)
 excGrid = new L.UtfGrid 'http://tiles{s}.ro.lt/oa/{z}/{x}/{y}.grid.json?callback={cb}', 
 	resolution: 4
 	subdomains:[1,2,3,4]
-popup = L.popup()
+
 exc = L.layerGroup([excTile,excGrid]).addTo(m)
 
 dd={}
@@ -45,9 +51,5 @@ excGrid.on 'click', (e)->
 	else
 		delete e.data.ScenicByway
 		data = (dd[k][v] for k,v of e.data).join('<br/>')
-	popup.setContent(data).setLatLng(e.latlng).openOn(m);
+	popup.setContent(data).setLatLng(e.latlng).openOn(m)
 lc.addOverlay exc, "NHS-SBW"
-onEachFeature = (f,l)->
-	l.bindPopup f.properties.name
-xtowns = L.geoJson.ajax("json/exclutions.geojson",{style:{fillColor:'rgb(166,36,45)',fillOpacity:0.7,color:'rgb(110,24,30)'},onEachFeature: onEachFeature}).addTo m
-lc.addOverlay xtowns, "Area Exclutions"
